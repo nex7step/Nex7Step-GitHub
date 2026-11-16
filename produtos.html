@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Produtos | NEX7 STEP</title>
+<meta name="description" content="Plaquinhas NFC e QR Code, chaveiros de programador e peças em impressão 3D da Nex7 Step.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Ctext x='32' y='47' font-size='42' font-weight='900' font-style='italic' text-anchor='middle' fill='%236b1fad' font-family='Arial'%3E7%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body id="top">
+<header>
+  <div class="wrap">
+    <a class="logo" href="index.html" aria-label="NEX7 STEP, voltar ao início"><img src="assets/logo.png" alt="NEX7 STEP" width="520" height="46"></a>
+    <button class="burger" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    <nav aria-label="Principal">
+      <a href="index.html#sobre">Quem Somos</a>
+      <a href="index.html#servicos">Serviços</a>
+      <a href="index.html#projetos">Projetos</a>
+      <a href="produtos.html" aria-current="page">Produtos</a>
+      <a class="btn" href="index.html#contato">Fale Conosco</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="ph dk">
+    <div class="wrap">
+      <h1>Nossos produtos</h1>
+      <p class="lead">Plaquinhas NFC e QR Code e chaveiros, feitos em impressão 3D. Toque em “Pedir” e a conversa já abre no WhatsApp.</p>
+    </div>
+  </section>
+
+  <section style="padding:56px 0 96px">
+    <div class="wrap">
+      <div class="tabs" role="group" aria-label="Filtrar produtos">
+        <button aria-pressed="true" data-f="todos">Todos</button>
+        <button aria-pressed="false" data-f="plaquinhas">Plaquinhas NFC e QR Code</button>
+        <button aria-pressed="false" data-f="chaveiros">Chaveiros</button>
+      </div>
+      <div class="gl" id="gl"></div>
+    </div>
+  </section>
+
+  <section class="alt band">
+    <div class="wrap">
+      <h2 class="rv">Não achou o que procura?</h2>
+      <p class="lead">Fazemos plaquinhas, chaveiros e peças personalizadas com a sua marca, cores e ideia.</p>
+      <div class="cta">
+        <a class="btn" href="https://wa.me/5534988387442?text=Ol%C3%A1!%20Quero%20um%20produto%20personalizado." target="_blank" rel="noopener">Pedir produto personalizado</a>
+        <a class="btn out" href="index.html#contato">Outros contatos</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="fbrand">
+        <a class="wm" href="index.html#inicio" aria-label="NEX7 STEP">NEX<b>7</b> STEP</a>
+        <p>A 7 passos do futuro. Sistemas, sites, plaquinhas NFC, impressão 3D e assistência técnica.</p>
+        <a class="ig" href="https://instagram.com/nex7step" target="_blank" rel="noopener">Siga @nex7step</a>
+      </div>
+      <nav class="fcol" aria-label="Rodapé">
+        <h4>Navegue</h4>
+        <a href="index.html#sobre">Quem somos</a>
+        <a href="index.html#servicos">Serviços</a>
+        <a href="produtos.html">Produtos</a>
+        <a href="index.html#projetos">Projetos</a>
+      </nav>
+      <div class="fcol">
+        <h4>Contato</h4>
+        <a href="https://wa.me/5534988387442" target="_blank" rel="noopener">(34) 98838-7442</a>
+        <a href="https://wa.me/5534997625702" target="_blank" rel="noopener">(34) 99762-5702</a>
+        <a href="mailto:contato.nex7step@gmail.com">contato.nex7step@gmail.com</a>
+      </div>
+    </div>
+    <div class="fbar">
+      <span>© 2026 Nex7 Step · Tecnologia, impressão 3D e suporte</span>
+      <a href="#top" class="up" aria-label="Voltar ao topo">Voltar ao topo ↑</a>
+    </div>
+  </div>
+</footer>
+
+<div class="mdl" id="mdl" role="dialog" aria-modal="true" aria-label="Visualização do produto" hidden>
+  <button class="mx" id="mx" aria-label="Fechar">✕</button>
+  <button class="mn mp" id="mp" aria-label="Anterior">‹</button>
+  <button class="mn mnx" id="mnx" aria-label="Próxima">›</button>
+  <figure>
+    <img id="mi" alt="">
+    <figcaption><strong id="mt"></strong><span id="md"></span><a id="mw" class="btn" target="_blank" rel="noopener">Pedir pelo WhatsApp</a></figcaption>
+  </figure>
+</div>
+<script src="js/main.js"></script>
+<script>
+(function () {
+  // Para adicionar um produto: copie uma linha, troque o nome do arquivo em assets/ e o texto.
+  // Ordem das plaquinhas: Google, Pix, Instagram, WhatsApp, Wi-Fi, Cardápio e Placa 3 em 1.
+  var P = [
+    ["plaquinhas", "plaquinha-google", "Plaquinha Google", "Leva o cliente direto para avaliar sua empresa no Google."],
+    ["plaquinhas", "plaquinha-pix", "Plaquinha Pix", "Receba pagamentos sem precisar ditar a chave."],
+    ["plaquinhas", "plaquinha-instagram", "Plaquinha Instagram", "Mais seguidores com um toque ou uma leitura do QR Code."],
+    ["plaquinhas", "plaquinha-whatsapp", "Plaquinha WhatsApp", "Abre a conversa com o seu cliente na hora."],
+    ["plaquinhas", "plaquinha-wifi", "Plaquinha Wi-Fi (PETG)", "O cliente conecta na rede sem digitar a senha."],
+    ["plaquinhas", "plaquinha-cardapio", "Plaquinha de cardápio", "Cardápio digital no celular do cliente."],
+    ["plaquinhas", "plaquinha-tripla", "Placa 3 em 1 (a sua escolha)", "Você escolhe as 3 funções: Google, Instagram, Pix, WhatsApp, Wi-Fi ou cardápio em uma única peça."],
+    ["chaveiros", "chaveiro-java", "Chaveiro Java", "Chaveiro de programador em impressão 3D."],
+    ["chaveiros", "chaveiro-codigo", "Chaveiro código", "Chaveiro de programador em impressão 3D."],
+    ["chaveiros", "chaveiro-github", "Chaveiro GitHub", "Chaveiro de programador em impressão 3D."],
+    ["chaveiros", "chaveiro-python", "Chaveiro Python", "Chaveiro de programador em impressão 3D."],
+    ["chaveiros", "chaveiro-javascript", "Chaveiro JavaScript", "Chaveiro de programador em impressão 3D."],
+    ["chaveiros", "chaveiro-csharp", "Chaveiro C#", "Chaveiro de programador em impressão 3D."],
+    ["chaveiros", "chaveiro-vscode", "Chaveiro vscode", "Chaveiro de programador em impressão 3D."]
+  ];
+  var WA = "https://wa.me/5534988387442?text=";
+  var gl = document.getElementById("gl"), btns = document.querySelectorAll(".tabs button");
+  gl.innerHTML = P.map(function (p, i) {
+    var msg = encodeURIComponent("Olá! Quero saber mais sobre: " + p[2]);
+    return '<article class="it rv" data-c="' + p[0] + '" data-i="' + i + '" id="' + p[1] + '">' +
+      '<button type="button" class="zoom" aria-label="Ampliar imagem: ' + p[2] + '">' +
+      '<img src="assets/' + p[1] + '.webp" alt="' + p[2] + '" width="640" height="960" loading="lazy"><span class="lupa" aria-hidden="true">⤢</span></button>' +
+      '<div><h3>' + p[2] + "</h3><p>" + p[3] + '</p><a href="' + WA + msg + '" target="_blank" rel="noopener">Pedir pelo WhatsApp</a></div></article>';
+  }).join("");
+  window.nexReveal && window.nexReveal(gl);
+
+  function filtrar(f) {
+    btns.forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.f === f); });
+    gl.querySelectorAll(".it").forEach(function (i) {
+      var hide = f !== "todos" && i.dataset.c !== f;
+      i.hidden = hide;
+      if (!hide) { i.classList.remove("in"); void i.offsetWidth; i.classList.add("in"); }
+    });
+  }
+  btns.forEach(function (b) { b.onclick = function () { filtrar(b.dataset.f); }; });
+  var h = location.hash.slice(1);
+  if (h === "plaquinhas" || h === "chaveiros") filtrar(h);
+
+  /* modal */
+  var m = document.getElementById("mdl"), mi = document.getElementById("mi"), cur = 0, last = null;
+  function vis() { return Array.prototype.filter.call(gl.querySelectorAll(".it"), function (i) { return !i.hidden; }); }
+  function show(i) {
+    var p = P[i]; cur = i;
+    mi.classList.remove("on");
+    mi.onload = function () { mi.classList.add("on"); };
+    mi.src = "assets/" + p[1] + ".webp"; mi.alt = p[2];
+    document.getElementById("mt").textContent = p[2];
+    document.getElementById("md").textContent = p[3];
+    document.getElementById("mw").href = WA + encodeURIComponent("Olá! Quero saber mais sobre: " + p[2]);
+  }
+  function step(d) {
+    var v = vis().map(function (e) { return +e.dataset.i; });
+    show(v[(v.indexOf(cur) + d + v.length) % v.length]);
+  }
+  function abrir(i) {
+    last = document.activeElement; show(i);
+    m.hidden = false; void m.offsetWidth; m.classList.add("open");
+    document.body.style.overflow = "hidden";
+    document.getElementById("mx").focus();
+  }
+  function fechar() {
+    m.classList.remove("open"); document.body.style.overflow = "";
+    setTimeout(function () { m.hidden = true; }, 250);
+    if (last) last.focus();
+  }
+  gl.addEventListener("click", function (e) {
+    var b = e.target.closest(".zoom"); if (b) abrir(+b.closest(".it").dataset.i);
+  });
+  document.getElementById("mx").onclick = fechar;
+  document.getElementById("mp").onclick = function () { step(-1); };
+  document.getElementById("mnx").onclick = function () { step(1); };
+  m.addEventListener("click", function (e) { if (e.target === m) fechar(); });
+  document.addEventListener("keydown", function (e) {
+    if (m.hidden) return;
+    if (e.key === "Escape") fechar();
+    if (e.key === "ArrowLeft") step(-1);
+    if (e.key === "ArrowRight") step(1);
+  });
+})();
+</script>
+</body>
+</html>
