@@ -76,15 +76,15 @@ Uma página longa dividida em seções, alternando fundo **preto** e fundo **lil
 <table>
   <tr>
     <td align="center" width="25%"><img src="assets/plaquinha-google.webp" alt="Plaquinha Google" /><br /><sub><b>Plaquinha Google</b></sub></td>
-    <td align="center" width="25%"><img src="assets/plaquinha-tripla.webp" alt="Placa 3 em 1" /><br /><sub><b>Placa 3 em 1</b></sub></td>
+    <td align="center" width="25%"><img src="assets/plaquinha-tripla.webp" alt="Placa 3 em 1" /><br /><sub><b>Placa personalizada 3 em 1</b></sub></td>
     <td align="center" width="25%"><img src="assets/chaveiro-python.webp" alt="Chaveiro Python" /><br /><sub><b>Chaveiros Programador</b></sub></td>
   </tr>
 </table>
 
-**🔹 Plaquinhas NFC e QR Code (7)**
+**🔹 Plaquinhas NFC e QR Code**
 Google, Pix, Instagram, WhatsApp, Wi-Fi (em PETG), cardápio e a **Placa 3 em 1**, em que o cliente escolhe as três funções que quer em uma única peça. O cliente aproxima o celular ou lê o QR Code e chega direto ao destino.
 
-**🔹 Chaveiros de programador (7)**
+**🔹 Chaveiros de programador**
 Java, código, GitHub, Python, JavaScript, C# e VS Code, todos em impressão 3D.
 
 **O que dá para fazer na página:**
@@ -199,8 +199,8 @@ O site já tem a **estrutura principal pronta**, com página inicial e catálogo
 
 **Nex7 Step** · *Tecnologia, impressão 3D e suporte*
 
-Feito por **Matheus D'Ávila** · © 2026
+Feito por **Matheus D'Ávila & Gabriel Rodrigues** · © 2026
 
-<sub>A 7 passos do futuro. 🟣</sub>
+<sub>Nex7 Step a 7 passos do futuro. 🟣</sub>
 
 </div>
