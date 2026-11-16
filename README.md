@@ -71,14 +71,13 @@ Uma página longa dividida em seções, alternando fundo **preto** e fundo **lil
 
 ### 🛍️ Página de produtos (`produtos.html`)
 
-É o catálogo da marca, com **14 itens** em uma grade de fotos.
+É o catálogo da marca, com itens em uma grade de fotos.
 
 <table>
   <tr>
     <td align="center" width="25%"><img src="assets/plaquinha-google.webp" alt="Plaquinha Google" /><br /><sub><b>Plaquinha Google</b></sub></td>
     <td align="center" width="25%"><img src="assets/plaquinha-tripla.webp" alt="Placa 3 em 1" /><br /><sub><b>Placa 3 em 1</b></sub></td>
-    <td align="center" width="25%"><img src="assets/chaveiro-python.webp" alt="Chaveiro Python" /><br /><sub><b>Chaveiro Python</b></sub></td>
-    <td align="center" width="25%"><img src="assets/chaveiro-github.webp" alt="Chaveiro GitHub" /><br /><sub><b>Chaveiro GitHub</b></sub></td>
+    <td align="center" width="25%"><img src="assets/chaveiro-python.webp" alt="Chaveiro Python" /><br /><sub><b>Chaveiros Programador</b></sub></td>
   </tr>
 </table>
 
