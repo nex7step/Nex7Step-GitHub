@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin | NEX7 STEP</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Ctext x='32' y='47' font-size='42' font-weight='900' font-style='italic' text-anchor='middle' fill='%236b1fad' font-family='Arial'%3E7%3C/text%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--p:#6b1fad;--pl:#b680e6;--alt:#f4eefa;--line:#e0d4ee;--mute:#5a5266;--err:#b3261e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--alt);color:#000;font:400 16px/1.5 "DM Sans",system-ui,sans-serif}
+h1,h2,h3{font-family:Orbitron,"DM Sans",sans-serif;font-style:italic;margin:0}
+header{background:#000;color:#fff;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5}
+header h1{font-size:1.05rem;font-weight:900}header h1 b{color:var(--pl)}
+main{max-width:1040px;margin:0 auto;padding:28px 20px 80px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:24px}
+.card h2{font-size:1.1rem;margin-bottom:16px}
+label{display:block;font-weight:500;font-size:.9rem;margin:12px 0 4px}
+input,select,textarea{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+textarea{min-height:76px;resize:vertical}
+:focus-visible{outline:3px solid var(--pl);outline-offset:2px}
+button{font:500 .95rem "DM Sans",sans-serif;cursor:pointer;border-radius:999px;border:2px solid var(--p);background:var(--p);color:#fff;padding:10px 20px}
+button.out{background:#fff;color:var(--p)}button.del{background:#fff;color:var(--err);border-color:var(--err)}
+button:disabled{opacity:.5;cursor:wait}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.msg{margin:12px 0 0;font-size:.92rem;min-height:1.3em}.msg.e{color:var(--err)}.msg.o{color:#1b6b34}
+#login{max-width:400px;margin:12vh auto}
+.cats{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px}
+.cats li{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px 8px 8px 14px}
+.cats li span{flex:1}.cats small{color:var(--mute)}
+.form{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}.form .full{grid-column:1/-1}
+#prev{width:120px;aspect-ratio:2/3;object-fit:contain;background:#120a1b;border-radius:10px;display:none;margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px;margin-top:16px}
+.p{border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.p img{width:100%;aspect-ratio:2/3;object-fit:contain;background:#120a1b}
+.p div{padding:12px;display:flex;flex-direction:column;gap:6px;flex:1}.p h3{font-size:.85rem}.p small{color:var(--mute)}
+.p .row{margin-top:auto}.p button{padding:6px 14px;font-size:.85rem}
+@media(max-width:640px){.form{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>NEX<b>7</b> STEP · Admin</h1><button class="out" id="sair" hidden>Sair</button></header>
+
+<section id="login" class="card">
+  <h2>Entrar</h2>
+  <label for="em">E-mail</label><input id="em" type="email" autocomplete="username">
+  <label for="pw">Senha</label><input id="pw" type="password" autocomplete="current-password">
+  <div class="row" style="margin-top:16px"><button id="go">Entrar</button></div>
+  <p class="msg" id="lm" role="status"></p>
+</section>
+
+<main id="app" hidden>
+  <section class="card">
+    <h2>Categorias</h2>
+    <form class="row" id="fc"><input id="cn" placeholder="Nova categoria (ex.: Cardápios)" required maxlength="60" style="flex:1;min-width:200px"><button>Adicionar categoria</button></form>
+    <ul class="cats" id="cl"></ul>
+    <p class="msg" id="cm" role="status"></p>
+  </section>
+
+  <section class="card">
+    <h2 id="ft">Novo produto</h2>
+    <form class="form" id="fp">
+      <div><label for="pn">Nome</label><input id="pn" required maxlength="80"></div>
+      <div><label for="pc">Categoria</label><select id="pc" required></select></div>
+      <div class="full"><label for="pd">Descrição</label><textarea id="pd" required maxlength="300"></textarea></div>
+      <div class="full"><label for="pi">Imagem <small id="ph" style="color:var(--mute);font-weight:400">(vertical 2:3, como no site)</small></label>
+        <input id="pi" type="file" accept="image/*"><img id="prev" alt="Prévia da imagem"></div>
+      <div class="full row" style="margin-top:16px"><button id="sv">Salvar produto</button><button type="button" class="out" id="cx" hidden>Cancelar edição</button></div>
+    </form>
+    <p class="msg" id="pm" role="status"></p>
+  </section>
+
+  <section class="card"><h2>Produtos cadastrados</h2><div class="grid" id="pl"></div></section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.58.0/dist/umd/supabase.min.js"></script>
+<script src="../js/config.js"></script>
+<script>
+(function () {
+  var $ = function (i) { return document.getElementById(i); };
+  var cfg = window.NEX_CFG || {};
+  if (!cfg.url || !cfg.anon) { $("lm").className = "msg e"; $("lm").textContent = "Preencha js/config.js com a URL e a chave anon do Supabase."; $("go").disabled = true; return; }
+  var db = supabase.createClient(cfg.url, cfg.anon);
+  var cats = [], prods = [], editing = null;
+
+  function h(tag, props) {
+    var e = document.createElement(tag);
+    Object.keys(props || {}).forEach(function (k) { e[k] = props[k]; });
+    for (var i = 2; i < arguments.length; i++) e.append(arguments[i]);
+    return e;
+  }
+  function say(id, t, ok) { var m = $(id); m.textContent = t || ""; m.className = "msg " + (t ? (ok ? "o" : "e") : ""); }
+  function slug(t) { return t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
+
+  /* login */
+  async function enter() {
+    var s = (await db.auth.getSession()).data.session;
+    if (!s) { $("login").hidden = false; $("app").hidden = true; $("sair").hidden = true; return; }
+    var a = await db.from("admins").select("user_id").maybeSingle();
+    if (!a.data) { await db.auth.signOut(); $("login").hidden = false; say("lm", "Esta conta não tem permissão de admin."); return; }
+    $("login").hidden = true; $("app").hidden = false; $("sair").hidden = false;
+    load();
+  }
+  $("go").onclick = async function () {
+    say("lm", "Entrando…", true);
+    var r = await db.auth.signInWithPassword({ email: $("em").value.trim(), password: $("pw").value });
+    if (r.error) return say("lm", "E-mail ou senha incorretos.");
+    $("pw").value = ""; say("lm", ""); enter();
+  };
+  $("pw").onkeydown = function (e) { if (e.key === "Enter") $("go").click(); };
+  $("sair").onclick = async function () { await db.auth.signOut(); enter(); };
+
+  /* dados */
+  async function load() {
+    var r = await Promise.all([db.from("categories").select("*").order("position").order("name"),
+      db.from("products").select("*").order("position").order("created_at")]);
+    if (r[0].error || r[1].error) return say("pm", "Não foi possível carregar os dados.");
+    cats = r[0].data; prods = r[1].data; draw();
+  }
+  function draw() {
+    $("cl").replaceChildren.apply($("cl"), cats.map(function (c) {
+      var n = prods.filter(function (p) { return p.category_id === c.id; }).length;
+      return h("li", {}, h("span", {}, c.name + " ", h("small", {}, "(" + n + ")")),
+        h("button", { className: "out", type: "button", onclick: function () { renameCat(c); } }, "Renomear"),
+        h("button", { className: "del", type: "button", onclick: function () { delCat(c, n); } }, "Excluir"));
+    }));
+    var cur = $("pc").value;
+    $("pc").replaceChildren.apply($("pc"), cats.map(function (c) { return h("option", { value: c.id }, c.name); }));
+    if (cur) $("pc").value = cur;
+    $("pl").replaceChildren.apply($("pl"), prods.map(function (p) {
+      var c = cats.find(function (x) { return x.id === p.category_id; });
+      return h("article", { className: "p" }, h("img", { src: p.image_url.indexOf("http") ? "../" + p.image_url : p.image_url, alt: p.name, loading: "lazy" }),
+        h("div", {}, h("h3", {}, p.name), h("small", {}, c ? c.name : ""),
+          h("div", { className: "row" },
+            h("button", { className: "out", type: "button", onclick: function () { edit(p); } }, "Editar"),
+            h("button", { className: "del", type: "button", onclick: function () { delProd(p); } }, "Excluir"))));
+    }));
+    if (!prods.length) $("pl").textContent = "Nenhum produto ainda.";
+  }
+
+  /* categorias */
+  $("fc").onsubmit = async function (e) {
+    e.preventDefault();
+    var name = $("cn").value.trim(), sg = slug(name);
+    if (!sg) return say("cm", "Use letras ou números no nome.");
+    var r = await db.from("categories").insert({ name: name, slug: sg, position: cats.length + 1 });
+    if (r.error) return say("cm", r.error.code === "23505" ? "Já existe uma categoria com esse nome." : "Erro ao salvar a categoria.");
+    $("cn").value = ""; say("cm", "Categoria adicionada. Ela já aparece no menu do site.", true); load();
+  };
+  async function renameCat(c) {
+    var n = prompt("Novo nome da categoria:", c.name); if (!n || !n.trim()) return;
+    var r = await db.from("categories").update({ name: n.trim() }).eq("id", c.id);
+    say("cm", r.error ? "Erro ao renomear." : "Categoria renomeada.", !r.error); load();
+  }
+  async function delCat(c, n) {
+    if (n) return say("cm", "Mova ou exclua os " + n + " produto(s) de “" + c.name + "” antes de excluir a categoria.");
+    if (!confirm("Excluir a categoria “" + c.name + "”?")) return;
+    var r = await db.from("categories").delete().eq("id", c.id);
+    say("cm", r.error ? "Erro ao excluir." : "Categoria excluída.", !r.error); load();
+  }
+
+  /* imagem: redimensiona e converte para webp antes de enviar */
+  function toWebp(file) {
+    return createImageBitmap(file).then(function (bm) {
+      var k = Math.min(1, 1000 / bm.width, 1500 / bm.height), cv = h("canvas", { width: Math.round(bm.width * k), height: Math.round(bm.height * k) });
+      cv.getContext("2d").drawImage(bm, 0, 0, cv.width, cv.height);
+      return new Promise(function (ok) { cv.toBlob(ok, "image/webp", 0.85); });
+    });
+  }
+  $("pi").onchange = function () {
+    var f = this.files[0];
+    $("prev").style.display = f ? "block" : "none";
+    if (f) $("prev").src = URL.createObjectURL(f);
+  };
+
+  /* produtos */
+  function reset() {
+    editing = null; $("fp").reset(); $("ft").textContent = "Novo produto"; $("cx").hidden = true; $("prev").style.display = "none";
+    $("ph").textContent = "(vertical 2:3, como no site)";
+  }
+  function edit(p) {
+    editing = p; $("pn").value = p.name; $("pd").value = p.description; $("pc").value = p.category_id;
+    $("ft").textContent = "Editar produto"; $("cx").hidden = false; $("pi").value = "";
+    $("prev").src = p.image_url.indexOf("http") ? "../" + p.image_url : p.image_url; $("prev").style.display = "block";
+    $("ph").textContent = "(deixe vazio para manter a imagem atual)";
+    $("fp").scrollIntoView({ behavior: "smooth" });
+  }
+  $("cx").onclick = reset;
+  $("fp").onsubmit = async function (e) {
+    e.preventDefault();
+    var f = $("pi").files[0];
+    if (!editing && !f) return say("pm", "Escolha uma imagem.");
+    if (!cats.length) return say("pm", "Crie uma categoria primeiro.");
+    $("sv").disabled = true; say("pm", "Salvando…", true);
+    try {
+      var row = { name: $("pn").value.trim(), description: $("pd").value.trim(), category_id: $("pc").value }, oldPath = null;
+      if (f) {
+        var path = crypto.randomUUID() + ".webp";
+        var up = await db.storage.from("produtos").upload(path, await toWebp(f), { contentType: "image/webp" });
+        if (up.error) throw up.error;
+        row.image_url = db.storage.from("produtos").getPublicUrl(path).data.publicUrl; row.image_path = path;
+        oldPath = editing && editing.image_path;
+      }
+      var r = editing ? await db.from("products").update(row).eq("id", editing.id)
+        : await db.from("products").insert(Object.assign(row, { position: prods.length + 1 }));
+      if (r.error) throw r.error;
+      if (oldPath) await db.storage.from("produtos").remove([oldPath]);
+      say("pm", "Produto salvo. Já está no site.", true); reset(); load();
+    } catch (err) { say("pm", "Erro ao salvar o produto. Tente novamente."); }
+    $("sv").disabled = false;
+  };
+  async function delProd(p) {
+    if (!confirm("Excluir “" + p.name + "”?")) return;
+    var r = await db.from("products").delete().eq("id", p.id);
+    if (r.error) return say("pm", "Erro ao excluir.");
+    if (p.image_path) await db.storage.from("produtos").remove([p.image_path]);
+    say("pm", "Produto excluído.", true); load();
+  }
+
+  enter();
+})();
+</script>
+</body>
+</html>

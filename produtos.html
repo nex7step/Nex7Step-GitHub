@@ -11,6 +11,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<style>
+.catnav{position:sticky;top:64px;z-index:5;margin:0 -24px 28px;padding:14px 24px;background:#fffffff2;border-bottom:1px solid var(--line);flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin}
+.catnav button{flex:none;white-space:nowrap}
+.vazio{color:var(--mute);padding:32px 0}
+</style>
 </head>
 <body id="top">
 <header>
@@ -37,11 +42,7 @@
 
   <section style="padding:56px 0 96px">
     <div class="wrap">
-      <div class="tabs" role="group" aria-label="Filtrar produtos">
-        <button aria-pressed="true" data-f="todos">Todos</button>
-        <button aria-pressed="false" data-f="plaquinhas">Plaquinhas NFC e QR Code</button>
-        <button aria-pressed="false" data-f="chaveiros">Chaveiros</button>
-      </div>
+      <div class="tabs catnav" id="catnav" role="group" aria-label="Categorias de produtos"></div>
       <div class="gl" id="gl"></div>
     </div>
   </section>
@@ -96,90 +97,117 @@
     <figcaption><strong id="mt"></strong><span id="md"></span><a id="mw" class="btn" target="_blank" rel="noopener">Pedir pelo WhatsApp</a></figcaption>
   </figure>
 </div>
+<script src="js/config.js"></script>
 <script src="js/main.js"></script>
 <script>
 (function () {
-  // Para adicionar um produto: copie uma linha, troque o nome do arquivo em assets/ e o texto.
-  // Ordem das plaquinhas: Google, Pix, Instagram, WhatsApp, Wi-Fi, Cardápio e Placa 3 em 1.
+  // Os produtos e categorias vêm do banco (painel em admin/). Se o banco não responder,
+  // o site mostra esta lista de reserva.
+  var CATS = [["plaquinhas", "Plaquinhas NFC e QR Code"], ["chaveiros", "Chaveiros"]];
   var P = [
-    ["plaquinhas", "plaquinha-google", "Plaquinha Google", "Leva o cliente direto para avaliar sua empresa no Google."],
-    ["plaquinhas", "plaquinha-pix", "Plaquinha Pix", "Receba pagamentos sem precisar ditar a chave."],
-    ["plaquinhas", "plaquinha-instagram", "Plaquinha Instagram", "Mais seguidores com um toque ou uma leitura do QR Code."],
-    ["plaquinhas", "plaquinha-whatsapp", "Plaquinha WhatsApp", "Abre a conversa com o seu cliente na hora."],
-    ["plaquinhas", "plaquinha-wifi", "Plaquinha Wi-Fi (PETG)", "O cliente conecta na rede sem digitar a senha."],
-    ["plaquinhas", "plaquinha-cardapio", "Plaquinha de cardápio", "Cardápio digital no celular do cliente."],
-    ["plaquinhas", "plaquinha-tripla", "Placa 3 em 1 (a sua escolha)", "Você escolhe as 3 funções: Google, Instagram, Pix, WhatsApp, Wi-Fi ou cardápio em uma única peça."],
-    ["chaveiros", "chaveiro-java", "Chaveiro Java", "Chaveiro de programador em impressão 3D."],
-    ["chaveiros", "chaveiro-codigo", "Chaveiro código", "Chaveiro de programador em impressão 3D."],
-    ["chaveiros", "chaveiro-github", "Chaveiro GitHub", "Chaveiro de programador em impressão 3D."],
-    ["chaveiros", "chaveiro-python", "Chaveiro Python", "Chaveiro de programador em impressão 3D."],
-    ["chaveiros", "chaveiro-javascript", "Chaveiro JavaScript", "Chaveiro de programador em impressão 3D."],
-    ["chaveiros", "chaveiro-csharp", "Chaveiro C#", "Chaveiro de programador em impressão 3D."],
-    ["chaveiros", "chaveiro-vscode", "Chaveiro vscode", "Chaveiro de programador em impressão 3D."]
+    ["plaquinhas", "assets/plaquinha-google.webp", "Plaquinha Google", "Leva o cliente direto para avaliar sua empresa no Google."],
+    ["plaquinhas", "assets/plaquinha-pix.webp", "Plaquinha Pix", "Receba pagamentos sem precisar ditar a chave."],
+    ["plaquinhas", "assets/plaquinha-instagram.webp", "Plaquinha Instagram", "Mais seguidores com um toque ou uma leitura do QR Code."],
+    ["plaquinhas", "assets/plaquinha-whatsapp.webp", "Plaquinha WhatsApp", "Abre a conversa com o seu cliente na hora."],
+    ["plaquinhas", "assets/plaquinha-wifi.webp", "Plaquinha Wi-Fi (PETG)", "O cliente conecta na rede sem digitar a senha."],
+    ["plaquinhas", "assets/plaquinha-cardapio.webp", "Plaquinha de cardápio", "Cardápio digital no celular do cliente."],
+    ["plaquinhas", "assets/plaquinha-tripla.webp", "Placa 3 em 1 (a sua escolha)", "Você escolhe as 3 funções: Google, Instagram, Pix, WhatsApp, Wi-Fi ou cardápio em uma única peça."],
+    ["chaveiros", "assets/chaveiro-java.webp", "Chaveiro Java", "Chaveiro de programador em impressão 3D."],
+    ["chaveiros", "assets/chaveiro-codigo.webp", "Chaveiro código", "Chaveiro de programador em impressão 3D."],
+    ["chaveiros", "assets/chaveiro-github.webp", "Chaveiro GitHub", "Chaveiro de programador em impressão 3D."],
+    ["chaveiros", "assets/chaveiro-python.webp", "Chaveiro Python", "Chaveiro de programador em impressão 3D."],
+    ["chaveiros", "assets/chaveiro-javascript.webp", "Chaveiro JavaScript", "Chaveiro de programador em impressão 3D."],
+    ["chaveiros", "assets/chaveiro-csharp.webp", "Chaveiro C#", "Chaveiro de programador em impressão 3D."],
+    ["chaveiros", "assets/chaveiro-vscode.webp", "Chaveiro vscode", "Chaveiro de programador em impressão 3D."]
   ];
-  var WA = "https://wa.me/5534988387442?text=";
-  var gl = document.getElementById("gl"), btns = document.querySelectorAll(".tabs button");
-  gl.innerHTML = P.map(function (p, i) {
-    var msg = encodeURIComponent("Olá! Quero saber mais sobre: " + p[2]);
-    return '<article class="it rv" data-c="' + p[0] + '" data-i="' + i + '" id="' + p[1] + '">' +
-      '<button type="button" class="zoom" aria-label="Ampliar imagem: ' + p[2] + '">' +
-      '<img src="assets/' + p[1] + '.webp" alt="' + p[2] + '" width="640" height="960" loading="lazy"><span class="lupa" aria-hidden="true">⤢</span></button>' +
-      '<div><h3>' + p[2] + "</h3><p>" + p[3] + '</p><a href="' + WA + msg + '" target="_blank" rel="noopener">Pedir pelo WhatsApp</a></div></article>';
-  }).join("");
-  window.nexReveal && window.nexReveal(gl);
+  var cfg = window.NEX_CFG || {};
+  function esc(t) { return String(t).replace(/[&<>"']/g, function (c) { return "&#" + c.charCodeAt(0) + ";"; }); }
+  function start() {
+    var WA = "https://wa.me/5534988387442?text=";
+    var gl = document.getElementById("gl"), nav = document.getElementById("catnav");
+    nav.innerHTML = [["todos", "Todos"]].concat(CATS).map(function (c) {
+      return '<button type="button" aria-pressed="false" data-f="' + esc(c[0]) + '">' + esc(c[1]) + "</button>";
+    }).join("");
+    var btns = nav.querySelectorAll("button");
+    gl.innerHTML = P.map(function (p, i) {
+      var msg = encodeURIComponent("Olá! Quero saber mais sobre: " + p[2]);
+      return '<article class="it rv" data-c="' + esc(p[0]) + '" data-i="' + i + '">' +
+        '<button type="button" class="zoom" aria-label="Ampliar imagem: ' + esc(p[2]) + '">' +
+        '<img src="' + esc(p[1]) + '" alt="' + esc(p[2]) + '" width="640" height="960" loading="lazy"><span class="lupa" aria-hidden="true">⤢</span></button>' +
+        '<div><h3>' + esc(p[2]) + "</h3><p>" + esc(p[3]) + '</p><a href="' + WA + msg + '" target="_blank" rel="noopener">Pedir pelo WhatsApp</a></div></article>';
+    }).join("");
+    window.nexReveal && window.nexReveal(gl);
+    var vz = document.createElement("p"); vz.className = "vazio"; vz.hidden = true;
+    vz.textContent = "Em breve, novos produtos nesta categoria."; gl.after(vz);
 
-  function filtrar(f) {
-    btns.forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.f === f); });
-    gl.querySelectorAll(".it").forEach(function (i) {
-      var hide = f !== "todos" && i.dataset.c !== f;
-      i.hidden = hide;
-      if (!hide) { i.classList.remove("in"); void i.offsetWidth; i.classList.add("in"); }
+    function filtrar(f) {
+      if (!CATS.some(function (c) { return c[0] === f; })) f = "todos";
+      btns.forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.f === f); });
+      history.replaceState(null, "", f === "todos" ? location.pathname : "#" + f);
+      vz.hidden = !!gl.querySelector(".it") && (f === "todos" || !!gl.querySelector('.it[data-c="' + f + '"]'));
+      gl.querySelectorAll(".it").forEach(function (i) {
+        var hide = f !== "todos" && i.dataset.c !== f;
+        i.hidden = hide;
+        if (!hide) { i.classList.remove("in"); void i.offsetWidth; i.classList.add("in"); }
+      });
+    }
+    btns.forEach(function (b) { b.onclick = function () { filtrar(b.dataset.f); }; });
+      filtrar(decodeURIComponent(location.hash.slice(1)) || "todos");
+    window.addEventListener("hashchange", function () { filtrar(decodeURIComponent(location.hash.slice(1)) || "todos"); });
+
+    /* modal */
+    var m = document.getElementById("mdl"), mi = document.getElementById("mi"), cur = 0, last = null;
+    function vis() { return Array.prototype.filter.call(gl.querySelectorAll(".it"), function (i) { return !i.hidden; }); }
+    function show(i) {
+      var p = P[i]; cur = i;
+      mi.classList.remove("on");
+      mi.onload = function () { mi.classList.add("on"); };
+      mi.src = p[1]; mi.alt = p[2];
+      document.getElementById("mt").textContent = p[2];
+      document.getElementById("md").textContent = p[3];
+      document.getElementById("mw").href = WA + encodeURIComponent("Olá! Quero saber mais sobre: " + p[2]);
+    }
+    function step(d) {
+      var v = vis().map(function (e) { return +e.dataset.i; });
+      show(v[(v.indexOf(cur) + d + v.length) % v.length]);
+    }
+    function abrir(i) {
+      last = document.activeElement; show(i);
+      m.hidden = false; void m.offsetWidth; m.classList.add("open");
+      document.body.style.overflow = "hidden";
+      document.getElementById("mx").focus();
+    }
+    function fechar() {
+      m.classList.remove("open"); document.body.style.overflow = "";
+      setTimeout(function () { m.hidden = true; }, 250);
+      if (last) last.focus();
+    }
+    gl.addEventListener("click", function (e) {
+      var b = e.target.closest(".zoom"); if (b) abrir(+b.closest(".it").dataset.i);
+    });
+    document.getElementById("mx").onclick = fechar;
+    document.getElementById("mp").onclick = function () { step(-1); };
+    document.getElementById("mnx").onclick = function () { step(1); };
+    m.addEventListener("click", function (e) { if (e.target === m) fechar(); });
+    document.addEventListener("keydown", function (e) {
+      if (m.hidden) return;
+      if (e.key === "Escape") fechar();
+      if (e.key === "ArrowLeft") step(-1);
+      if (e.key === "ArrowRight") step(1);
     });
   }
-  btns.forEach(function (b) { b.onclick = function () { filtrar(b.dataset.f); }; });
-  var h = location.hash.slice(1);
-  if (h === "plaquinhas" || h === "chaveiros") filtrar(h);
-
-  /* modal */
-  var m = document.getElementById("mdl"), mi = document.getElementById("mi"), cur = 0, last = null;
-  function vis() { return Array.prototype.filter.call(gl.querySelectorAll(".it"), function (i) { return !i.hidden; }); }
-  function show(i) {
-    var p = P[i]; cur = i;
-    mi.classList.remove("on");
-    mi.onload = function () { mi.classList.add("on"); };
-    mi.src = "assets/" + p[1] + ".webp"; mi.alt = p[2];
-    document.getElementById("mt").textContent = p[2];
-    document.getElementById("md").textContent = p[3];
-    document.getElementById("mw").href = WA + encodeURIComponent("Olá! Quero saber mais sobre: " + p[2]);
-  }
-  function step(d) {
-    var v = vis().map(function (e) { return +e.dataset.i; });
-    show(v[(v.indexOf(cur) + d + v.length) % v.length]);
-  }
-  function abrir(i) {
-    last = document.activeElement; show(i);
-    m.hidden = false; void m.offsetWidth; m.classList.add("open");
-    document.body.style.overflow = "hidden";
-    document.getElementById("mx").focus();
-  }
-  function fechar() {
-    m.classList.remove("open"); document.body.style.overflow = "";
-    setTimeout(function () { m.hidden = true; }, 250);
-    if (last) last.focus();
-  }
-  gl.addEventListener("click", function (e) {
-    var b = e.target.closest(".zoom"); if (b) abrir(+b.closest(".it").dataset.i);
-  });
-  document.getElementById("mx").onclick = fechar;
-  document.getElementById("mp").onclick = function () { step(-1); };
-  document.getElementById("mnx").onclick = function () { step(1); };
-  m.addEventListener("click", function (e) { if (e.target === m) fechar(); });
-  document.addEventListener("keydown", function (e) {
-    if (m.hidden) return;
-    if (e.key === "Escape") fechar();
-    if (e.key === "ArrowLeft") step(-1);
-    if (e.key === "ArrowRight") step(1);
-  });
+  if (cfg.url && cfg.anon) {
+    var H = { apikey: cfg.anon }; if (cfg.anon.indexOf("sb_") !== 0) H.Authorization = "Bearer " + cfg.anon;
+    var q = function (t) { return fetch(cfg.url + "/rest/v1/" + t, { headers: H }).then(function (r) { return r.json(); }); };
+    Promise.all([q("categories?select=slug,name&order=position,name"),
+      q("products?select=name,description,image_url,categories(slug)&order=position,created_at")]).then(function (r) {
+      if (Array.isArray(r[0]) && Array.isArray(r[1]) && r[0].length) {
+        CATS = r[0].map(function (c) { return [c.slug, c.name]; });
+        P = r[1].map(function (p) { return [p.categories.slug, p.image_url, p.name, p.description]; });
+      }
+      start();
+    }).catch(start);
+  } else start();
 })();
 </script>
 </body>
